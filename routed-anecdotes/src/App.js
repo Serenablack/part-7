@@ -138,6 +138,8 @@ const App = () => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
     navigate("/")
+    setNotification(`${anecdote.content} added successfully`)
+    setTimeout(()=>{setNotification(null)},5000)
   }
 
   const anecdoteById = (id) =>
@@ -158,6 +160,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu  />
+     <strong> {notification}</strong>
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>} />
         <Route path="/:id" element={<Anecdote anecdotes={anecdotes}/>} />
