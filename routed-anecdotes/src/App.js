@@ -1,21 +1,20 @@
 import { useState } from 'react'
 
 import {
-  Routes, Route, Link,useParams
+  Routes, Route, Link,useParams,useMatch,useNavigate
 } from "react-router-dom"
 
-const Menu = ({anecdotes,addNew}) => {
+const Menu = () => {
   const padding = {
     paddingRight: 5
   }
  
   return (
-   
     <div>  
         <Link style={padding} to="/">anecdotes</Link>
         <Link style={padding} to="/create"> create new </Link>       
         <Link style={padding} to="/about">about</Link>
-      </div>
+    </div>
 
       
     // <div>
@@ -81,6 +80,7 @@ const CreateNew = (props) => {
 
 
   const handleSubmit = (e) => {
+  
     e.preventDefault()
     props.addNew({
       content,
@@ -132,10 +132,12 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
-
+    const navigate=useNavigate()
   const addNew = (anecdote) => {
+
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    navigate("/")
   }
 
   const anecdoteById = (id) =>
