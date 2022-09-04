@@ -39,9 +39,9 @@ const AnecdoteList = ({ anecdotes }) => (
   </div>
 )
 
-const Anecdote = ({ anecdotes }) => {
-  const id = useParams().id
-  const anecdote = anecdotes.find(n => n.id === Number(id)) 
+const Anecdote = ({ anecdote }) => {
+  // const id = useParams().id
+  // const anecdote = anecdotes.find(n => n.id === Number(id)) 
   return (
     <div>
       <h2>{anecdote.content}</h2>
@@ -133,10 +133,16 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
     const navigate=useNavigate()
+
+    const match = useMatch('/:id')
+    const anecdote = match 
+      ? anecdotes.find(anec => anec.id === Number(match.params.id))
+      : null
+
   const addNew = (anecdote) => {
 
     anecdote.id = Math.round(Math.random() * 10000)
-    setAnecdotes(anecdotes.concat(anecdote))
+    setAnecdotes(anecdote.concat(anecdote))
     navigate("/")
     setNotification(`${anecdote.content} added successfully`)
     setTimeout(()=>{setNotification(null)},5000)
@@ -163,7 +169,7 @@ const App = () => {
      <strong> {notification}</strong>
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>} />
-        <Route path="/:id" element={<Anecdote anecdotes={anecdotes}/>} />
+        <Route path="/:id" element={<Anecdote anecdote={anecdote}/>} />
 
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
         <Route path="/about" element={<About />} />
