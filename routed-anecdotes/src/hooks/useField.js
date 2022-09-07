@@ -8,9 +8,14 @@ export const useField = (name) => {
     console.log(value);
   };
 
+  const reset = () => {
+    setValue("");
+  };
+
   return {
     name,
     value,
     onChange,
+    reset,
   };
 };

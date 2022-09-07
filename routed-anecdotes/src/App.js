@@ -92,6 +92,7 @@ const CreateNew = (props) => {
   const Content = useField("content");
   const Author = useField("author");
   const Info = useField("info");
+  // const Reset = useField("reset");
 
   // const [content, setContent] = useState('')
   // const [author, setAuthor] = useState("");
@@ -107,6 +108,11 @@ const CreateNew = (props) => {
     });
   };
 
+  const handleReset = () => {
+    Content.reset();
+    Author.reset();
+    Info.reset();
+  };
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -122,10 +128,7 @@ const CreateNew = (props) => {
         </div>
         <div>
           author
-          <input
-            //
-            {...Author}
-          />
+          <input {...Author} reset="" />
         </div>
         <div>
           url for more info
@@ -134,9 +137,14 @@ const CreateNew = (props) => {
             // value={info}
             // onChange={(e) => setInfo(e.target.value)}
             {...Info}
+            reset=""
           />
         </div>
         <button>create</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" name="reset" onClick={handleReset}>
+          reset
+        </button>
       </form>
     </div>
   );
