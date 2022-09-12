@@ -28,7 +28,6 @@ export const useCountry = (name) => {
           setCountry(res.data);
         })
         .catch((error) => {
-          console.log("error");
           setCountry("");
         });
     }

@@ -1,31 +1,7 @@
 import { useState } from "react";
+import Country from "./component/Country";
 
-import { useCountry, useField } from "./useCountry";
-
-const Country = ({ country, name }) => {
-  console.log(country);
-
-  if (country === null) {
-    return null;
-  }
-  if (country === "") {
-    return <div>not found...</div>;
-  } else {
-    const countryObj = country[0];
-    return (
-      <div>
-        <h3>{countryObj.name.common}</h3>
-        <div>population {countryObj.population}</div>
-        <div>capital {countryObj.capital}</div>
-        <img
-          src={countryObj.flags.png}
-          height="100"
-          alt={`flag of ${countryObj.name.common}`}
-        />
-      </div>
-    );
-  }
-};
+import { useCountry, useField } from "./hooks/useCountry";
 
 const App = () => {
   const nameInput = useField("text");
@@ -44,7 +20,7 @@ const App = () => {
         <button>find</button>
       </form>
 
-      <Country country={country} name={name} />
+      <Country country={country} />
     </div>
   );
 };
