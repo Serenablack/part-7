@@ -1,52 +1,41 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState } from "react";
 
-const useField = (type) => {
-  const [value, setValue] = useState('')
+import { useCountry, useField } from "./useCountry";
 
-  const onChange = (event) => {
-    setValue(event.target.value)
+const Country = ({ country, name }) => {
+  console.log(country);
+
+  if (country === null) {
+    return null;
   }
-
-  return {
-    type,
-    value,
-    onChange
+  if (country === "") {
+    return <div>not found...</div>;
+  } else {
+    const countryObj = country[0];
+    return (
+      <div>
+        <h3>{countryObj.name.common}</h3>
+        <div>population {countryObj.population}</div>
+        <div>capital {countryObj.capital}</div>
+        <img
+          src={countryObj.flags.png}
+          height="100"
+          alt={`flag of ${countryObj.name.common}`}
+        />
+      </div>
+    );
   }
-}
-
-const useCountry = (name) => {
-  const [country, setCountry] = useState(null)
-
-  useEffect(() => {})
-
-  return country
-}
-
-const Country = ({ country }) => {
-  if (!country) {
-    return <div>not found...</div>
-  }
-
-  return (
-    <div>
-      <h3>{country.name.common}</h3>
-      <div>population {country.population}</div> 
-      <div>capital {country.capital}</div>
-      <img src={country.flags.png} height='100' alt={`flag of ${country.name.common}`}/> 
-    </div>
-  )  
-}
+};
 
 const App = () => {
-  const nameInput = useField('text')
-  const [name, setName] = useState('')
-  const country = useCountry(name)
+  const nameInput = useField("text");
+  const [name, setName] = useState("");
+  const country = useCountry(name);
 
   const fetch = (e) => {
-    e.preventDefault()
-    setName(nameInput.value)
-  }
+    e.preventDefault();
+    setName(nameInput.value);
+  };
 
   return (
     <div>
@@ -55,9 +44,9 @@ const App = () => {
         <button>find</button>
       </form>
 
-      <Country country={country} />
+      <Country country={country} name={name} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
