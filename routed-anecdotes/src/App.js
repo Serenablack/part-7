@@ -6,7 +6,6 @@ const Menu = () => {
   const padding = {
     paddingRight: 5,
   };
-  console.log("hey");
 
   return (
     <div>
