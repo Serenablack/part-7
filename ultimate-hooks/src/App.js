@@ -11,7 +11,6 @@ const App = () => {
   const handleNoteSubmit = (event) => {
     event.preventDefault();
     noteService.create({ content: content.value });
-    console.log("hey");
   };
 
   const handlePersonSubmit = (event) => {
