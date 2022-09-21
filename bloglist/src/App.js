@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Blog from "./components/Blog";
@@ -7,56 +7,70 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import { initializeBlog } from "./reducers/blogReducer";
-import { blogNotific } from "./reducers/notificationReducer";
+import { initializeUser, logout } from "./reducers/authorizeReducer";
 
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+// import { Routes, Route, useParams, Link } from "react-router-dom";
+
+// import { blogNotific } from "./reducers/notificationReducer";
+
+// import blogService from "./services/blogs";
+// import loginService from "./services/login";
+
 import "./index.css";
 
 const App = () => {
   // const [blogs, setBlogs] = useState([]);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [user, setUser] = useState(null);
   // const [alertStat, setStat] = useState("");
 
   const blogformRef = useRef();
 
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blog);
+  const user = useSelector((state) => state.authorize);
+
+  // const user = useSelector((state) => state.authorize);
 
   useEffect(() => {
     dispatch(initializeBlog());
+    dispatch(initializeUser());
   }, [dispatch]);
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  // };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  // useEffect(() => {
+  //   const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+  //   if (loggedUserJSON) {
+  //     const user = JSON.parse(loggedUserJSON);
+  //     setUser(user);
+  //     blogService.setToken(user.token);
+  //   }
+  // }, []);
 
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
+  // const handleLogin = async (event) => {
+  //   event.preventDefault();
 
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      dispatch(blogNotific("Wrong credentials", "error", 3000));
-      // setStat("error");
-    }
-  };
+  //   try {
+  //     const user = await loginService.login({
+  //       username,
+  //       password,
+  //     });
+
+  //     window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+  //     // setUser(user);
+  //     // setUsername("");
+  //     // setPassword("");
+  //     dispatch(login)
+  //   } catch (exception) {
+  //     dispatch(blogNotific("Wrong credentials", "error", 3000));
+  //     // setStat("error");
+  //   }
+  // };
 
   // const updateFunc = async (blogLikes) => {
   //   try {
@@ -119,16 +133,19 @@ const App = () => {
   // const blogLikes = (a, b) => b.likes - a.likes;
 
   return (
-    <div>
+    <div className="container">
       <h2>blogs</h2>
+      {/* <Routes>
+      <Route path="/users/:id"></Route>
+      </Routes> */}
       <Notification />
       {user === null ? (
         <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          password={password}
+        // handleLogin={handleLogin}
+        // username={username}
+        // setUsername={setUsername}
+        // setPassword={setPassword}
+        // password={password}
         />
       ) : (
         <div>
@@ -136,8 +153,10 @@ const App = () => {
           <button
             type="logout"
             onClick={() => {
-              window.localStorage.removeItem("loggedBlogappUser");
-              setUser(null);
+              // handleLogout();
+              dispatch(logout());
+              // window.localStorage.removeItem("loggedBlogappUser");
+              // setUser(null);
             }}
           >
             logout
