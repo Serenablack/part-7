@@ -1,28 +1,34 @@
 import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
+import { initializeBlog } from "./reducers/blogReducer";
+import { blogNotific } from "./reducers/notificationReducer";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import "./index.css";
-import Togglable from "./components/Togglable";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [message, setMessage] = useState(null);
+  // const [blogs, setBlogs] = useState([]);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [alertStat, setStat] = useState("");
+  // const [alertStat, setStat] = useState("");
 
   const blogformRef = useRef();
 
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blog);
+
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    dispatch(initializeBlog());
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -47,82 +53,75 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setMessage("Wrong credentials");
-      setStat("error");
-      setTimeout(() => {
-        setMessage(null);
-      }, 3000);
+      dispatch(blogNotific("Wrong credentials", "error", 3000));
+      // setStat("error");
     }
   };
 
-  const addFunc = async (blog) => {
-    try {
-      const addedBlog = await blogService.create(blog);
-      setMessage(
-        `New blog ${blog.title} by ${blog.author} was successfully added.`
-      );
-      setStat("success");
-      setTimeout(() => setMessage(null), 4000);
-      setBlogs([...blogs, addedBlog.data]);
-      blogformRef.current.toggleVisibility();
-    } catch (error) {
-      setMessage(error.response.data.error);
-      setTimeout(() => setMessage(null), 4000);
-    }
-  };
+  // const updateFunc = async (blogLikes) => {
+  //   try {
+  //     const updatedBlog = await blogService.update(blogLikes);
 
-  const updateFunc = async (blogLikes) => {
-    try {
-      const updatedBlog = await blogService.update(blogLikes);
+  //     dispatch(
+  //       blogNotific(
+  //         `Thank you for ${blogLikes.likes} on ${blogLikes.title}`,
+  //         "success",
+  //         4000
+  //       )
+  //     );
+  //     // setBlogs(
+  //     //   blogs.map((blog) =>
+  //     //     blog.id !== blogLikes.id ? blog : updatedBlog.data
+  //     //   )
+  //     // );
+  //     // setStat("success");
+  //     // setTimeout(() => setMessage(null), 4000);
+  //   } catch (error) {
+  //     dispatch(blogNotific(error.response.data.error, "error", 4000));
 
-      setMessage(`Thank you for ${blogLikes.likes} on ${blogLikes.title}`);
-      setBlogs(
-        blogs.map((blog) =>
-          blog.id !== blogLikes.id ? blog : updatedBlog.data
-        )
-      );
-      setStat("success");
-      setTimeout(() => setMessage(null), 4000);
-    } catch (error) {
-      setMessage(error.response.data.error);
-      setTimeout(() => setMessage(null), 4000);
-    }
-  };
+  //     // setMessage(error.response.data.error);
+  //     // setTimeout(() => setMessage(null), 4000);
+  //   }
+  // };
 
-  const deleteFunc = async (blogDelete) => {
-    try {
-      if (
-        window.confirm(
-          `Do you really want to remove blog ${blogDelete.title} by ${blogDelete.author}`
-        )
-      ) {
-        await blogService.remove(blogDelete);
-        setMessage(` ${blogDelete.title} deleted`);
+  // const deleteFunc = async (blogDelete) => {
+  //   try {
+  //     if (
+  //       window.confirm(
+  //         `Do you really want to remove blog ${blogDelete.title} by ${blogDelete.author}`
+  //       )
+  //     ) {
+  //       await blogService.remove(blogDelete);
+  //       dispatch(blogNotific(` ${blogDelete.title} deleted`, "error", 4000));
 
-        setBlogs(blogs.filter((blog) => blog.id !== blogDelete.id));
+  //       // setMessage(` ${blogDelete.title} deleted`);
 
-        setStat("error");
-        setTimeout(() => setMessage(null), 4000);
-      }
-    } catch (error) {
-      setMessage(error.response.data.error);
-      setTimeout(() => setMessage(null), 4000);
-    }
-  };
+  //       // setBlogs(blogs.filter((blog) => blog.id !== blogDelete.id));
+
+  //       // setStat("error");
+  //       // setTimeout(() => setMessage(null), 4000);
+  //     }
+  //   } catch (error) {
+  //     dispatch(blogNotific(error.response.data.error, "error", 4000));
+
+  //     // setMessage(error.response.data.error);
+  //     // setTimeout(() => setMessage(null), 4000);
+  //   }
+  // };
 
   const blogForm = () => {
     return (
       <Togglable buttonLabel="new note" ref={blogformRef}>
-        <BlogForm addfunc={addFunc} />
+        <BlogForm />
       </Togglable>
     );
   };
-  const blogLikes = (a, b) => b.likes - a.likes;
+  // const blogLikes = (a, b) => b.likes - a.likes;
 
   return (
     <div>
       <h2>blogs</h2>
-      <Notification alertStat={alertStat} message={message} />
+      <Notification />
       {user === null ? (
         <LoginForm
           handleLogin={handleLogin}
@@ -144,12 +143,13 @@ const App = () => {
             logout
           </button>
           {blogForm()}
-          {blogs.sort(blogLikes).map((blog) => (
+          {/* .sort(blogLikes) */}
+          {blogs.map((blog) => (
             <Blog
               key={blog.id}
               blog={blog}
-              updateFunc={updateFunc}
-              deleteFunc={deleteFunc}
+              // updateFunc={updateFunc}
+              // deleteFunc={deleteFunc}
             />
           ))}
         </div>

@@ -1,8 +1,14 @@
-const Notification = ({ message, alertStat }) => {
-  if (message !== null)
+// import { blogNotific } from "../reducers/notificationReducer";
+
+import { useSelector } from "react-redux";
+
+const Notification = () => {
+  const notification = useSelector((state) => state.notification);
+
+  if (notification !== null)
     return (
-      <div className={alertStat === "success" ? "success" : "error"}>
-        {message}
+      <div className={notification.type === "success" ? "success" : "error"}>
+        {notification.message}
       </div>
     );
 };

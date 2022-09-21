@@ -114,7 +114,7 @@ describe("Blog app", function () {
           cy.contains("Blog3 Shake").parent().as("blog3");
         });
 
-        it.only("blogs are ordered according to likes in descending order", function () {
+        it("blogs are ordered according to likes in descending order", function () {
           cy.get("@blog1").contains("view").click();
           cy.get("@blog1").contains("like").click();
           cy.wait(500);

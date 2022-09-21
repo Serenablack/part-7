@@ -1,10 +1,16 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, updateFunc, deleteFunc }) => {
+import { useDispatch } from "react-redux";
+import { increaseLike, deleteBlog } from "../reducers/blogReducer";
+import { blogNotific } from "../reducers/notificationReducer";
+
+const Blog = ({ blog }) => {
   const [button, setButton] = useState("view");
   const [visible, setVisible] = useState(false);
-  const [blogObj, setBlogObj] = useState(blog);
+  // const [blogObj, setBlogObj] = useState(blog);
+
+  const dispatch = useDispatch();
 
   const showWhenVisible = { display: visible ? "" : "none" };
 
@@ -21,16 +27,37 @@ const Blog = ({ blog, updateFunc, deleteFunc }) => {
   };
 
   const increaseLikes = () => {
-    const updatedBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-    };
-    updateFunc(updatedBlog);
-    setBlogObj(updatedBlog);
+    // const updatedBlog = {
+    //   ...blog,
+    //   likes: blog.likes + 1,
+    // };
+    dispatch(increaseLike(blog));
+    dispatch(
+      blogNotific(
+        `Thank you for ${blog.likes} on ${blog.title}`,
+        "success",
+        4000
+      )
+    );
+    // updateFunc(updatedBlog);
+    // setBlogObj(updatedBlog);
   };
 
   const removeBlog = () => {
-    deleteFunc(blog);
+    try {
+      if (
+        window.confirm(
+          `Do you really want to remove blog ${blog.title} by ${blog.author}`
+        )
+      ) {
+        dispatch(deleteBlog(blog));
+        dispatch(blogNotific(` ${blog.title} deleted`, "error", 4000));
+      }
+    } catch (error) {
+      dispatch(blogNotific(error.response.data.error, "error", 4000));
+    }
+
+    // deleteFunc(blog);
   };
 
   return (
@@ -51,7 +78,9 @@ const Blog = ({ blog, updateFunc, deleteFunc }) => {
       <div style={showWhenVisible} className="togglableForm">
         <p>{blog.url}</p>
         <p>
-          {blogObj.likes}
+          {/* {blogObj.likes} */}
+          {blog.likes}
+
           <button id="like-button" onClick={increaseLikes}>
             like
           </button>
@@ -68,9 +97,9 @@ const Blog = ({ blog, updateFunc, deleteFunc }) => {
 };
 
 Blog.propTypes = {
-  updateFunc: PropTypes.func.isRequired,
+  // updateFunc: PropTypes.func.isRequired,
   blog: PropTypes.object.isRequired,
-  deleteFunc: PropTypes.func.isRequired,
+  // deleteFunc: PropTypes.func.isRequired,
 };
 
 export default Blog;
