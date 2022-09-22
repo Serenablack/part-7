@@ -9,7 +9,7 @@ import Togglable from "./components/Togglable";
 import { initializeBlog } from "./reducers/blogReducer";
 import { initializeUser, logout } from "./reducers/authorizeReducer";
 
-// import { Routes, Route, useParams, Link } from "react-router-dom";
+import { Routes, Route, useParams, Link } from "react-router-dom";
 
 // import { blogNotific } from "./reducers/notificationReducer";
 
@@ -135,18 +135,21 @@ const App = () => {
   return (
     <div className="container">
       <h2>blogs</h2>
-      {/* <Routes>
-      <Route path="/users/:id"></Route>
-      </Routes> */}
-      <Notification />
+      
+      <Routes>
+        <Route path="/users/:id"></Route>
+      </Routes>
+      
       {user === null ? (
+        <div>
+      <Notification />
         <LoginForm
         // handleLogin={handleLogin}
         // username={username}
         // setUsername={setUsername}
         // setPassword={setPassword}
         // password={password}
-        />
+        /></div>
       ) : (
         <div>
           {user.name} logged in
