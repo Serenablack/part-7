@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/authorizeReducer";
-import { blogNotific } from "../reducers/notificationReducer";
+import { initializeBlog } from "../reducers/blogReducer";
 
 const LoginForm = () =>
   //   {
@@ -14,22 +14,20 @@ const LoginForm = () =>
   {
     const dispatch = useDispatch();
     const handleLogin = async (event) => {
-      try {
-        event.preventDefault();
+      event.preventDefault();
 
-        const username = event.target.Username.value;
-        const password = event.target.Password.value;
-        event.target.Username.value = "";
-        event.target.Password.value = "";
+      const username = event.target.Username.value;
+      const password = event.target.Password.value;
+      event.target.Username.value = "";
+      event.target.Password.value = "";
+      dispatch(login(username, password));
+      dispatch(initializeBlog());
 
-        // setUser(user);
-        // setUsername("");
-        // setPassword("");
-        dispatch(login(username, password));
-      } catch (exception) {
-        dispatch(blogNotific("Wrong credentials", "error", 3000));
-        // setStat("error");
-      }
+      // setUser(user);
+      // setUsername("");
+      // setPassword("");
+
+      // setStat("error");
     };
 
     return (

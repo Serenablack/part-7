@@ -1,14 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Blog from "./components/Blog";
-import BlogForm from "./components/BlogForm";
+// import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
+import BlogList from "./components/BlogList";
+import Users from "./components/Users";
+
 import { initializeBlog } from "./reducers/blogReducer";
 import { initializeUser, logout } from "./reducers/authorizeReducer";
+import { initializeUsers } from "./reducers/userReducer";
 
+// eslint-disable-next-line no-unused-vars
 import { Routes, Route, useParams, Link } from "react-router-dom";
 
 // import { blogNotific } from "./reducers/notificationReducer";
@@ -26,18 +29,22 @@ const App = () => {
   // const [user, setUser] = useState(null);
   // const [alertStat, setStat] = useState("");
 
-  const blogformRef = useRef();
-
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blog);
   const user = useSelector((state) => state.authorize);
+  const users = useSelector((state) => state.users);
 
   // const user = useSelector((state) => state.authorize);
 
   useEffect(() => {
     dispatch(initializeBlog());
     dispatch(initializeUser());
+    dispatch(initializeUsers());
   }, [dispatch]);
+
+  const padding = {
+    padding: 5,
+  };
 
   // const handleLogout = () => {
   //   dispatch(logout());
@@ -123,36 +130,29 @@ const App = () => {
   //   }
   // };
 
-  const blogForm = () => {
-    return (
-      <Togglable buttonLabel="new note" ref={blogformRef}>
-        <BlogForm />
-      </Togglable>
-    );
-  };
-  // const blogLikes = (a, b) => b.likes - a.likes;
-
   return (
     <div className="container">
       <h2>blogs</h2>
-      
-      <Routes>
-        <Route path="/users/:id"></Route>
-      </Routes>
-      
+
       {user === null ? (
         <div>
-      <Notification />
-        <LoginForm
-        // handleLogin={handleLogin}
-        // username={username}
-        // setUsername={setUsername}
-        // setPassword={setPassword}
-        // password={password}
-        /></div>
+          <Notification />
+          <LoginForm
+          // handleLogin={handleLogin}
+          // username={username}
+          // setUsername={setUsername}
+          // setPassword={setPassword}
+          // password={password}
+          />
+        </div>
       ) : (
         <div>
-          {user.name} logged in
+          <p>{user.username} logged in</p>
+          {/* <Routes> */}
+          {/* <Route path="/api/users" element={<Users />}></Route>
+            <Route path="/users/:id"></Route> */}
+          {/* <Route path=></Route> */}
+          {/* </Routes> */}
           <button
             type="logout"
             onClick={() => {
@@ -164,16 +164,21 @@ const App = () => {
           >
             logout
           </button>
-          {blogForm()}
-          {/* .sort(blogLikes) */}
-          {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              // updateFunc={updateFunc}
-              // deleteFunc={deleteFunc}
-            />
-          ))}
+          <div>
+            <Link style={padding} to="/blogs">
+              blogs
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
+          </div>
+          <Routes>
+            <Route path="/users" element={<Users users={users} />} />
+
+            <Route path="/blogs" element={<BlogList blogs={blogs} />} />
+            {/* <Route path="/" element={<Home />} /> */}
+          </Routes>
+          <Route path="/blogs" element={<BlogList blogs={blogs} />} />
         </div>
       )}
     </div>

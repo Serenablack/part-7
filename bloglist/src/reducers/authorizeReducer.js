@@ -1,11 +1,13 @@
 import blogService from "../services/blogs";
 import loginService from "../services/login";
+import { blogNotific } from "../reducers/notificationReducer";
 
 const authorizeReducer = (state = null, action) => {
   switch (action.type) {
     case "INIT_USER":
       return action.data;
     case "LOG_IN":
+      console.log("here");
       return action.data;
     case "LOG_OUT":
       return action.data;
@@ -32,16 +34,21 @@ export const initializeUser = () => {
 
 export const login = (username, password) => {
   return async (dispatch) => {
-    const user = await loginService.login({
-      username,
-      password,
-    });
-    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-    blogService.setToken(user.token);
-    dispatch({
-      type: "LOGIN",
-      data: user,
-    });
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      });
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      blogService.setToken(user.token);
+
+      dispatch({
+        type: "LOG_IN",
+        data: user,
+      });
+    } catch (error) {
+      dispatch(blogNotific(error.response.data.error, "error", 3000));
+    }
   };
 };
 

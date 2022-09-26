@@ -17,6 +17,7 @@ const getAll = () => {
 };
 
 const create = async (newObject) => {
+  // console.log(axios.post(baseUrl, newObject, config));
   return axios.post(baseUrl, newObject, config);
 };
 

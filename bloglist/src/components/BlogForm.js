@@ -25,7 +25,6 @@ const BlogForm = ({ blog }) => {
       event.target.url.value = "";
       event.target.author.value = "";
 
-      console.log({ title, url, author });
       const blogtoCreate = { title, url, author };
 
       dispatch(createBlog(blogtoCreate));
@@ -109,7 +108,9 @@ const BlogForm = ({ blog }) => {
 };
 
 // BlogForm.propTypes = {
-//   title: PropTypes.func.isRequired,
+//   title: PropTypes.string.isRequired,
+//   url: PropTypes.string.isRequired,
+//   author: PropTypes.string.isRequired,
 // };
 
 export default BlogForm;

@@ -60,6 +60,10 @@ const Blog = ({ blog }) => {
     // deleteFunc(blog);
   };
 
+  if (!blog) {
+    return null;
+  }
+
   return (
     <div style={blogStyle} className="blog-list">
       <div id="blogshown">
