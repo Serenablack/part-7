@@ -11,7 +11,6 @@ const blogSlice = createSlice({
     },
 
     incLike(state, action) {
-      console.log(state);
       const id = action.payload;
       const updatedObj = state.find((Obj) => Obj.id === id);
       console.log(updatedObj);
@@ -65,7 +64,7 @@ export const createBlog = (content) => {
 export const increaseLike = (blogtoUpdate) => {
   return async (dispatch) => {
     const blog = dispatch(incLike(blogtoUpdate.id));
-    console.log(blog);
+
     // eslint-disable-next-line no-unused-vars
     const updatedBlog = await blogService.update({
       ...blogtoUpdate,

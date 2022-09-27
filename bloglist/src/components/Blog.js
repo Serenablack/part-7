@@ -1,30 +1,31 @@
-import { useState } from "react";
+// import { useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { increaseLike, deleteBlog } from "../reducers/blogReducer";
 import { blogNotific } from "../reducers/notificationReducer";
 
 const Blog = ({ blog }) => {
-  const [button, setButton] = useState("view");
-  const [visible, setVisible] = useState(false);
+  // const [button, setButton] = useState("view");
+  // const [visible, setVisible] = useState(false);
   // const [blogObj, setBlogObj] = useState(blog);
 
   const dispatch = useDispatch();
 
-  const showWhenVisible = { display: visible ? "" : "none" };
+  // const showWhenVisible = { display: visible ? "" : "none" };
 
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+  // const toggleVisibility = () => {
+  //   setVisible(!visible);
+  // };
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
+  // const blogStyle = {
+  //   paddingTop: 10,
+  //   paddingLeft: 2,
+  //   border: "solid",
+  //   borderWidth: 1,
+  //   marginBottom: 5,
+  // };
 
   const increaseLikes = () => {
     // const updatedBlog = {
@@ -65,10 +66,11 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <div style={blogStyle} className="blog-list">
-      <div id="blogshown">
-        {blog.title} {blog.author}
-        <button
+    <div
+    // style={blogStyle} className="blog-list"
+    >
+      {/* <div id="blogshown"> */}
+      {/* <button
           type="submit"
           onClick={() => {
             button === "hide" ? setButton("view") : setButton("hide");
@@ -76,26 +78,31 @@ const Blog = ({ blog }) => {
           }}
         >
           {button}
+        </button> */}
+      {/* </div> */}
+      {/* <div
+         style={showWhenVisible}
+        className="togglableForm"
+      > */}
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
+      <a href="blog.url">{blog.url}</a>
+      <p>
+        {/* {blogObj.likes} */}
+        {blog.likes}
+
+        <button id="like-button" onClick={increaseLikes}>
+          like
+        </button>
+      </p>
+      {/* <p>{blogObj.user.username}</p> */}
+      <div>
+        <button id="remove-button" onClick={removeBlog}>
+          remove
         </button>
       </div>
-
-      <div style={showWhenVisible} className="togglableForm">
-        <p>{blog.url}</p>
-        <p>
-          {/* {blogObj.likes} */}
-          {blog.likes}
-
-          <button id="like-button" onClick={increaseLikes}>
-            like
-          </button>
-        </p>
-        {/* <p>{blogObj.user.username}</p> */}
-        <div>
-          <button id="remove-button" onClick={removeBlog}>
-            remove
-          </button>
-        </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

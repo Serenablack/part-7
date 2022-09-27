@@ -7,6 +7,7 @@ import Notification from "./components/Notification";
 import BlogList from "./components/BlogList";
 import Users from "./components/Users";
 import User from "./components/User";
+import Blog from "./components/Blog";
 
 import { initializeBlog } from "./reducers/blogReducer";
 import { initializeUser, logout } from "./reducers/authorizeReducer";
@@ -131,13 +132,16 @@ const App = () => {
   //   }
   // };
 
-  const match = useMatch("/user/:id");
+  const Umatch = useMatch("/user/:id");
+  const Bmatch = useMatch("/blog/:id");
 
-  const userMatch = match
-    ? users.find((user) => user.id === match.params.id)
+  const userMatch = Umatch
+    ? users.find((user) => user.id === Umatch.params.id)
     : null;
-  // console.log(user.id);
-  // console.log(match.params.id);
+
+  const blogMatch = Bmatch
+    ? blogs.find((b) => b.id === Bmatch.params.id)
+    : null;
 
   return (
     <div className="container">
@@ -157,11 +161,7 @@ const App = () => {
       ) : (
         <div>
           <p>{user.username} logged in</p>
-          {/* <Routes> */}
-          {/* <Route path="/api/users" element={<Users />}></Route>
-            <Route path="/users/:id"></Route> */}
-          {/* <Route path=></Route> */}
-          {/* </Routes> */}
+
           <button
             type="logout"
             onClick={() => {
@@ -183,7 +183,7 @@ const App = () => {
           </div> */}
           <Routes>
             <Route path="/user/:id" element={<User user={userMatch} />} />
-            {/* <Route path="/user/:id" element={<User user={userMatch} />} /> */}
+            <Route path="/blog/:id" element={<Blog blog={blogMatch} />} />
             <Route path="/" element={<BlogList blogs={blogs} />} />
             <Route path="/blogs" element={<BlogList blogs={blogs} />} />
 
