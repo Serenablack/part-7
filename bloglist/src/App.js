@@ -6,13 +6,14 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import BlogList from "./components/BlogList";
 import Users from "./components/Users";
+import User from "./components/User";
 
 import { initializeBlog } from "./reducers/blogReducer";
 import { initializeUser, logout } from "./reducers/authorizeReducer";
 import { initializeUsers } from "./reducers/userReducer";
 
 // eslint-disable-next-line no-unused-vars
-import { Routes, Route, useParams, Link } from "react-router-dom";
+import { Routes, Route, useParams, Link, useMatch } from "react-router-dom";
 
 // import { blogNotific } from "./reducers/notificationReducer";
 
@@ -42,9 +43,9 @@ const App = () => {
     dispatch(initializeUsers());
   }, [dispatch]);
 
-  const padding = {
-    padding: 5,
-  };
+  // const padding = {
+  //   padding: 5,
+  // };
 
   // const handleLogout = () => {
   //   dispatch(logout());
@@ -130,6 +131,14 @@ const App = () => {
   //   }
   // };
 
+  const match = useMatch("/user/:id");
+
+  const userMatch = match
+    ? users.find((user) => user.id === match.params.id)
+    : null;
+  // console.log(user.id);
+  // console.log(match.params.id);
+
   return (
     <div className="container">
       <h2>blogs</h2>
@@ -164,21 +173,26 @@ const App = () => {
           >
             logout
           </button>
-          <div>
+          {/* <div>
             <Link style={padding} to="/blogs">
               blogs
             </Link>
             <Link style={padding} to="/users">
               users
             </Link>
-          </div>
+          </div> */}
           <Routes>
-            <Route path="/users" element={<Users users={users} />} />
-
+            <Route path="/user/:id" element={<User user={userMatch} />} />
+            {/* <Route path="/user/:id" element={<User user={userMatch} />} /> */}
+            <Route path="/" element={<BlogList blogs={blogs} />} />
             <Route path="/blogs" element={<BlogList blogs={blogs} />} />
-            {/* <Route path="/" element={<Home />} /> */}
+
+            <Route
+              path="/users"
+              element={user ? <Users users={users} /> : <LoginForm />}
+            />
           </Routes>
-          <Route path="/blogs" element={<BlogList blogs={blogs} />} />
+          {/* <Route path="/blogs" element={<BlogList blogs={blogs} />} /> */}
         </div>
       )}
     </div>

@@ -1,30 +1,41 @@
 // import { useDispatch, useSelector } from "react-redux";
+import {
+  // BrowserRouter as Router, Routes, Route,
+  Link,
+} from "react-router-dom";
+import "../index.css";
+
 const Users = ({ users }) => {
   // const dispatch=useDispatch()
   // return users.map((user) => {
 
   // })
-  console.log(users);
+
   if (!users) {
     return null;
   }
   // return <h1>hey</h1>;
   return (
-    <table className="table">
-      <tr>
-        <th>users</th>
-        <th>blogs created</th>
-      </tr>
-
-      {users.map((user) => (
-        <div key={user.id}>
+    <>
+      <h1>Users</h1>
+      <table className="table">
+        <tbody>
           <tr>
-            <td> {user.username} </td>
-            <td>{user.blogs.length}</td>
+            <th></th>
+            <th>blogs created</th>
           </tr>
-        </div>
-      ))}
-    </table>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <Link to={`/user/${user.id}`}>{user.username}</Link>
+              </td>
+
+              <td>{user.blogs.length}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 };
 export default Users;
