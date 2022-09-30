@@ -28,21 +28,17 @@ const BlogForm = ({ blog }) => {
       const blogtoCreate = { title, url, author };
 
       dispatch(createBlog(blogtoCreate));
-      dispatch(
-        blogNotific(
-          `New blog ${blog.title} by ${blog.author} was successfully added.`,
-          "success",
-          4000
-        )
-      );
+      if (!blogformRef) {
+        blogformRef.current.toggleVisibility();
+      }
       // setStat("success");
       // setTimeout(() => setMessage(null), 4000);
 
       // setBlogs([...blogs, addedBlog.data]);
-      blogformRef.current.toggleVisibility();
     } catch (error) {
       // console.log(error);
-      dispatch(blogNotific("error", "error", 3000));
+      console.log(error);
+      dispatch(blogNotific(error.response.data.error, "error", 3000));
 
       // setMessage(error.response.data.error);
       // setTimeout(() => setMessage(null), 4000);

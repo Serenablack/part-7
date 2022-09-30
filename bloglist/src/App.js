@@ -16,6 +16,10 @@ import { initializeUsers } from "./reducers/userReducer";
 // eslint-disable-next-line no-unused-vars
 import { Routes, Route, Link, useMatch, Navigate } from "react-router-dom";
 
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+
 // import { blogNotific } from "./reducers/notificationReducer";
 
 // import blogService from "./services/blogs";
@@ -163,25 +167,33 @@ const App = () => {
         </div>
       ) : (
         <div>
+          <Notification />
           <div className="navigation">
-            <Link style={padding} to="/blogs">
-              blogs
-            </Link>
-            <Link style={padding} to="/users">
-              users
-            </Link>
-            <b>{user.username} logged in</b> &nbsp;&nbsp;
-            <button
-              type="logout"
-              onClick={() => {
-                // handleLogout();
-                dispatch(logout());
-                // window.localStorage.removeItem("loggedBlogappUser");
-                // setUser(null);
-              }}
-            >
-              logout
-            </button>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Link style={padding} to="/blogs">
+                  blogs
+                </Link>
+                <Link style={padding} to="/users">
+                  users
+                </Link>
+                <Nav class="navbar navbar-light bg-light">
+                  <b>{user.username} logged in</b> &nbsp;&nbsp;
+                </Nav>
+                <button
+                  type="logout"
+                  onClick={() => {
+                    // handleLogout();
+                    dispatch(logout());
+                    // window.localStorage.removeItem("loggedBlogappUser");
+                    // setUser(null);
+                  }}
+                >
+                  logout
+                </button>
+              </Navbar.Collapse>
+            </Navbar>
           </div>
           <div>
             <Routes>
@@ -204,6 +216,7 @@ const App = () => {
                 element={user ? <Users users={users} /> : <LoginForm />}
               />
             </Routes>
+
             {/* <Route path="/blogs" element={<BlogList blogs={blogs} />} /> */}
           </div>
         </div>

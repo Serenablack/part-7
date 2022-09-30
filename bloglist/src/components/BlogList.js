@@ -19,11 +19,14 @@ const BlogList = ({ blogs }) => {
   const blogLikes = (a, b) => b.likes - a.likes;
 
   const blogStyle = {
-    paddingTop: 3,
+    marginTop: 6,
+    textAlign: "center",
+    paddingTop: 2,
     paddingLeft: 2,
     border: "solid",
-    borderWidth: 1,
-    marginBottom: 3,
+    borderRadius: 15,
+    borderWidth: 2,
+    marginBottom: 6,
   };
 
   return (

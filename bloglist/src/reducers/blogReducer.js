@@ -54,6 +54,13 @@ export const createBlog = (content) => {
       const newBlog = await blogService.create(content);
 
       dispatch(appendBlogs(newBlog.data));
+      dispatch(
+        blogNotific(
+          `New blog ${newBlog.data.title} by ${newBlog.data.author} was successfully added.`,
+          "success",
+          4000
+        )
+      );
     } catch (error) {
       dispatch(blogNotific(error.response.data.error, "error", 3000));
     }

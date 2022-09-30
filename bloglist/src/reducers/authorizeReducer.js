@@ -7,7 +7,6 @@ const authorizeReducer = (state = null, action) => {
     case "INIT_USER":
       return action.data;
     case "LOG_IN":
-      console.log("here");
       return action.data;
     case "LOG_OUT":
       return action.data;

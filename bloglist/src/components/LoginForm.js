@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { login } from "../reducers/authorizeReducer";
 import { initializeBlog } from "../reducers/blogReducer";
 
+import { Form, Button } from "react-bootstrap";
+
 const LoginForm = () =>
   //   {
   //   handleLogin,
@@ -16,10 +18,10 @@ const LoginForm = () =>
     const handleLogin = async (event) => {
       event.preventDefault();
 
-      const username = event.target.Username.value;
-      const password = event.target.Password.value;
-      event.target.Username.value = "";
-      event.target.Password.value = "";
+      const username = event.target.username.value;
+      const password = event.target.password.value;
+      event.target.username.value = "";
+      event.target.password.value = "";
       dispatch(login(username, password));
       dispatch(initializeBlog());
 
@@ -32,25 +34,30 @@ const LoginForm = () =>
 
     return (
       <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
             id="username"
             // value={username}
-            name="Username"
+            name="username"
             // onChange={({ target }) => setUsername(target.value)}
           />
-        </div>
-        <div>
           password
-          <input
+          <Form.Control
             id="password"
             // value={password}
-            name="Password"
+            name="password"
             // onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
-        <button id="submit">login</button>
+          <Button
+            variant="primary"
+            type="submit"
+            border="10px solid white
+            login"
+          >
+            login
+          </Button>
+        </Form.Group>
       </form>
     );
   };

@@ -3,6 +3,8 @@ import {
   // BrowserRouter as Router, Routes, Route,
   Link,
 } from "react-router-dom";
+import { Table } from "react-bootstrap";
+
 import "../index.css";
 
 const Users = ({ users }) => {
@@ -18,7 +20,7 @@ const Users = ({ users }) => {
   return (
     <>
       <h1>Users</h1>
-      <table className="table">
+      <Table striped className="table">
         <tbody>
           <tr>
             <th></th>
@@ -34,7 +36,7 @@ const Users = ({ users }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </>
   );
 };
