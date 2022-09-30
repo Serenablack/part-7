@@ -1,8 +1,10 @@
-// import { useState } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+// import axios from "axios";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createComment, initComment } from "../reducers/commentReducer";
 import { increaseLike, deleteBlog } from "../reducers/blogReducer";
 import { blogNotific } from "../reducers/notificationReducer";
 
@@ -12,7 +14,14 @@ const Blog = ({ blog }) => {
   // const [blogObj, setBlogObj] = useState(blog);
 
   const dispatch = useDispatch();
+  const comment = useSelector((state) => state.comment);
 
+  useEffect(() => {
+    if (!blog) {
+      return undefined;
+    }
+    dispatch(initComment(blog.id));
+  }, [dispatch, blog]);
   // const showWhenVisible = { display: visible ? "" : "none" };
 
   // const toggleVisibility = () => {
@@ -60,17 +69,25 @@ const Blog = ({ blog }) => {
 
     // deleteFunc(blog);
   };
-
   if (!blog) {
     return null;
   }
+  const handleComment = (event) => {
+    event.preventDefault();
+    const comment = event.target.comment.value;
+    event.target.comment.value = "";
+    dispatch(createComment(comment, blog.id));
+
+    return comment;
+  };
 
   return (
-    <div
-    // style={blogStyle} className="blog-list"
-    >
-      {/* <div id="blogshown"> */}
-      {/* <button
+    <div>
+      <div
+      // style={blogStyle} className="blog-list"
+      >
+        {/* <div id="blogshown"> */}
+        {/* <button
           type="submit"
           onClick={() => {
             button === "hide" ? setButton("view") : setButton("hide");
@@ -79,32 +96,55 @@ const Blog = ({ blog }) => {
         >
           {button}
         </button> */}
-      {/* </div> */}
-      {/* <div
+        {/* </div> */}
+        {/* <div
          style={showWhenVisible}
         className="togglableForm"
       > */}
-      <h1>
-        {blog.title} {blog.author}
-      </h1>
-      <a href="blog.url">{blog.url}</a>
-      <p>
-        {/* {blogObj.likes} */}
-        {blog.likes}
+        <h1>
+          {blog.title} {blog.author}
+        </h1>
+        <a href="blog.url">{blog.url}</a>
+        <p>
+          {/* {blogObj.likes} */}
+          {blog.likes}
 
-        <button id="like-button" onClick={increaseLikes}>
-          like
-        </button>
-      </p>
-      {/* <p>{blogObj.user.username}</p> */}
-      <div>
-        <button id="remove-button" onClick={removeBlog}>
-          remove
-        </button>
+          <button id="like-button" onClick={increaseLikes}>
+            like
+          </button>
+        </p>
+        {/* <p>{blogObj.user.username}</p> */}
+        <div>
+          <button id="remove-button" onClick={removeBlog}>
+            remove
+          </button>
+        </div>
+        {/* </div> */}
       </div>
-      {/* </div> */}
+
+      <div>
+        <h3>comments</h3>
+        <form onSubmit={handleComment}>
+          <div>
+            <input
+              type="text"
+              name="comment"
+              // value={comment}
+              // onChange={({ target }) => setCom(target.value)}
+            />
+            &nbsp;
+            <button>
+              <strong>add comment</strong>
+            </button>
+          </div>
+        </form>
+        {comment.map((c) => {
+          return <li key={c.id}>{c.comment}</li>;
+        })}
+      </div>
     </div>
   );
+  // );
 };
 
 Blog.propTypes = {

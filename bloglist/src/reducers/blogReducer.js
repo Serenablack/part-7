@@ -13,7 +13,7 @@ const blogSlice = createSlice({
     incLike(state, action) {
       const id = action.payload;
       const updatedObj = state.find((Obj) => Obj.id === id);
-      console.log(updatedObj);
+
       const blog = {
         ...updatedObj,
         likes: updatedObj.likes + 1,
@@ -22,8 +22,7 @@ const blogSlice = createSlice({
     },
     createBlog(state, action) {
       const content = action.payload;
-      console.log(state);
-      console.log(content);
+
       return [...state, content];
     },
     delBlog(state, action) {
@@ -53,7 +52,7 @@ export const createBlog = (content) => {
   return async (dispatch) => {
     try {
       const newBlog = await blogService.create(content);
-      console.log(newBlog.data);
+
       dispatch(appendBlogs(newBlog.data));
     } catch (error) {
       dispatch(blogNotific(error.response.data.error, "error", 3000));
@@ -63,6 +62,7 @@ export const createBlog = (content) => {
 
 export const increaseLike = (blogtoUpdate) => {
   return async (dispatch) => {
+    // eslint-disable-next-line no-unused-vars
     const blog = dispatch(incLike(blogtoUpdate.id));
 
     // eslint-disable-next-line no-unused-vars
@@ -76,8 +76,7 @@ export const increaseLike = (blogtoUpdate) => {
 
 export const deleteBlog = (blogtoDelete) => {
   return async (dispatch) => {
-    const blog = dispatch(delBlog(blogtoDelete.id));
-    console.log(blog);
+    dispatch(delBlog(blogtoDelete.id));
 
     // eslint-disable-next-line no-unused-vars
     const deletedBlog = await blogService.remove(blogtoDelete);
